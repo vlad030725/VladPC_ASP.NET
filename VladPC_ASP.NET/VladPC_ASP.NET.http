@@ -1,0 +1,6 @@
+@VladPC_ASP.NET_HostAddress = http://localhost:5075
+
+GET {{VladPC_ASP.NET_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
