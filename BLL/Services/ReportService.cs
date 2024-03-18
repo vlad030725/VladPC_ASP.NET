@@ -1,11 +1,12 @@
-﻿using BLL.DTO;
-using BLL.Interfaces;
-using DAL.Repository;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Interfaces.Services;
+using Interfaces.DTO;
+using Interfaces.Repository;
+using DomainModel;
 
 namespace BLL.Services
 {

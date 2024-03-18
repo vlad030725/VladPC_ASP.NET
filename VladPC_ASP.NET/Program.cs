@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 using DAL;
-using DAL.Repository;
+using Interfaces.Repository;
 using DAL.RepositoryPgs;
-using BLL.Interfaces;
+using Interfaces.Services;
 using BLL.Services;
 using Microsoft.EntityFrameworkCore;
 

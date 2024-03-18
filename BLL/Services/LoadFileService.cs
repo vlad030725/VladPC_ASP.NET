@@ -1,7 +1,4 @@
-﻿using BLL.DTO;
-using BLL.Interfaces;
-using DAL.Repository;
-using Npgsql.Internal;
+﻿using Npgsql.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +8,10 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
+using Interfaces.Services;
+using Interfaces.DTO;
+using Interfaces.Repository;
+using DomainModel;
 
 namespace BLL.Services
 {

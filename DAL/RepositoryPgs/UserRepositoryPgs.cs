@@ -1,4 +1,5 @@
-﻿using DAL.Repository;
+﻿using Interfaces.Repository;
+using DomainModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
