@@ -104,7 +104,7 @@ namespace BLL.Services
                 IdSocket = product.IdSocket,
                 CountMemory = product.CountMemory,
                 IdTypeMemory = product.IdTypeMemory,
-                IdFormFactor = product.IdFormFactor
+                IdFormFactor = product.IdFormFactor,
             });
             Save();
         }
