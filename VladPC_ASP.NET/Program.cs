@@ -23,6 +23,11 @@ builder.Services.AddTransient<IProcurementService, ProcurementService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IReportService, ReportService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<ICompanyService, CompanyService>();
+builder.Services.AddTransient<ITypeProductService, TypeProductService>();
+builder.Services.AddTransient<ITypeMemoryService, TypeMemoryService>();
+builder.Services.AddTransient<ISocketService, SocketService>();
+builder.Services.AddTransient<IFormFactorService, FormFactorService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
