@@ -16,6 +16,8 @@ namespace Interfaces.DTO
             Name = typeMemory.Name;
         }
 
+        public TypeMemoryDto() { }
+
         public int Id { get; set; }
 
         public string Name { get; set; }

@@ -9,9 +9,9 @@ namespace Interfaces.Services
 {
     public interface ISocketService
     {
-        List<SocketDto> GetSocket();
+        List<SocketDto> GetSockets();
 
-        SocketDto GetSockets(int id);
+        SocketDto GetSocket(int id);
 
         void CreateSocket(SocketDto socket);
 

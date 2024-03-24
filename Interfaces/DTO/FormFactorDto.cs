@@ -15,6 +15,8 @@ namespace Interfaces.DTO
             Name = ff.Name;
         }
 
+        public FormFactorDto() { }
+
         public int Id { get; set; }
 
         public string Name { get; set; }

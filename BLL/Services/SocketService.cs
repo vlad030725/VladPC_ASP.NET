@@ -34,12 +34,12 @@ namespace BLL.Services
             SaveChanges();
         }
 
-        public List<SocketDto> GetSocket()
+        public List<SocketDto> GetSockets()
         {
             return db.Socket.GetList().Select(i => new SocketDto(i)).ToList();
         }
 
-        public SocketDto GetSockets(int id)
+        public SocketDto GetSocket(int id)
         {
             return new SocketDto(db.Socket.GetItem(id));
         }

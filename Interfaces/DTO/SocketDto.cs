@@ -14,6 +14,9 @@ namespace Interfaces.DTO
             Id = s.Id;
             Name = s.Name;
         }
+
+        public SocketDto() { }
+
         public int Id { get; set; }
 
         public string Name { get; set; }
