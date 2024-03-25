@@ -29,25 +29,37 @@ namespace VladPC_ASP.NET.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProcurementDto>> Get(int id)
         {
-            //return await Task.Run(() => _procurementService.(id));
+            return await Task.Run(() => _procurementService.GetProcurement(id));
         }
 
         // POST api/<ProcurementController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<ProcurementDto>> Post(ProcurementDto value)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await Task.Run(() => _procurementService.CreateProcurement(
+                new ProcurementDto
+                {
+                    Sum = value.Sum,
+                }));
+            return CreatedAtAction("Get", new { Id = value.Id }, value);
         }
 
         // PUT api/<ProcurementController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult<ProcurementDto>> Put(ProcurementDto value)
         {
+            await Task.Run(() => _procurementService.UpdateProcurement(value));
+            return CreatedAtAction("Get", new { Id = value.Id }, value);
         }
 
         // DELETE api/<ProcurementController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async void Delete(int id)
         {
+            await Task.Run(() => _procurementService.DeleteProcurement(id));
         }
     }
 }

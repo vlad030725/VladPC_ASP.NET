@@ -17,6 +17,8 @@ namespace Interfaces.DTO
             Sum = p.Sum;
         }
 
+        public ProcurementDto() { }
+
         public int Id { get; set; }
 
         public DateTime? CreatedDate { get; set; }

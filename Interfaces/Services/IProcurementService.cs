@@ -15,6 +15,10 @@ namespace Interfaces.Services
 
         List<ProcurementDto> GetAllProcurements();
 
+        ProcurementDto GetProcurement(int Id);
+
+        void CreateProcurement(ProcurementDto procurement);
+
         List<ProcurementRowDto> GetProcurementRows(int IdProcurement);
 
         List<CompanyDto> GetAllCompanies();
@@ -32,6 +36,8 @@ namespace Interfaces.Services
         void AddProcurement();
 
         void UpdateProcurement(ProcurementDto procurement);
+
+        void DeleteProcurement(int Id);
 
         void AddProcurementRow(ProductDto pr, int count, int price);
 

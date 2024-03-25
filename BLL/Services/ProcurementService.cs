@@ -45,6 +45,21 @@ namespace BLL.Services
             return db.Procurement.GetList().Select(i => new ProcurementDto(i, GetProcurementRows(i.Id))).ToList();
         }
 
+        public ProcurementDto GetProcurement(int Id)
+        {
+            return new ProcurementDto(db.Procurement.GetItem(Id), GetProcurementRows(Id));
+        }
+
+        public void CreateProcurement(ProcurementDto procurement)
+        {
+            db.Procurement.Create(new Procurement()
+            {
+                Sum = procurement.Sum,
+                CreatedDate = DateTime.Now,
+            });
+            Save();
+        }
+
         public List<ProcurementRowDto> GetProcurementRows(int IdProcurement)
         {
             return db.ProcurementRow.GetList().Select(i => new ProcurementRowDto(i, GetAllProducts())).Where(i => i.IdProcurement == IdProcurement).ToList();
@@ -108,6 +123,12 @@ namespace BLL.Services
             Procurement pr = db.Procurement.GetItem(procurement.Id);
             pr.CreatedDate = procurement.CreatedDate;
             pr.Sum = procurement.Sum;
+            Save();
+        }
+
+        public void DeleteProcurement(int Id)
+        {
+            db.Procurement.Delete(Id);
             Save();
         }
 
