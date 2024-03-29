@@ -1,83 +1,112 @@
 import React, { useEffect, useState } from "react";
-import { Input, Modal, Button, Form, Select, } from "antd";
+import { Input, Modal, Button, Form } from "antd";
 import CompanyObj from "../Entities/CompanyObj";
 
 interface PropsType {
-    addCompany: (worker: CompanyObj) => void;
+    editingCompany: CompanyObj | undefined;
+    addCompany: (company: CompanyObj) => void;
+    updateCompany: (company: CompanyObj) => void;
     createModalIsShow: boolean;
     showCreateModel: (value: boolean) => void;
 }
 
-const TaskCreate : React.FC<PropsType> = ({
-    addCompany: addTask,
+const CompanyCreate : React.FC<PropsType> = ({
+    editingCompany,
+    addCompany,
+    updateCompany,
     createModalIsShow, 
     showCreateModel
 }) => {
     const [form] = Form.useForm();
     const [name, setName] = useState<string>("");
+    const [isEdit, setIsEdit] = useState<boolean>(false);
 
     useEffect(() => {
 
-        const getProjects = async () => {
-
-            const requestOptions: RequestInit = {
-                method: 'GET'
-            };
-
-            await fetch(`http://localhost:7118/api/Projects`, requestOptions)
-                .then(response => response.json())
-                .then(
-                    (data) => {
-                        console.log("--------");
-                        console.log(data);
-                        //setProjects(data);
-                    },
-                    (error) => console.log(error)
-                );
-        };
-
-        getProjects();
+        if (editingCompany !== undefined)
+        {
+            form.setFieldsValue({
+                name: editingCompany.name
+            });
+            setName(editingCompany.name);
+            console.log(editingCompany.name)
+            setIsEdit(true);
+        }
 
         return () => {
             form.resetFields();
+            setIsEdit(false);
         }
-    }, [form]);
+    }, [editingCompany, form]);
 
     const handleSubmit = (e: Event) => {
-        const createTasks = async () => {
-            const task : CompanyObj = {
+        const createCompanies = async () => {
+            const company : CompanyObj = {
                 name
             }
 
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(task)
+                body: JSON.stringify(company)
             };
 
-            const response = await fetch(`http://localhost:7118/api/Companies`, requestOptions);
+            const response = await fetch(`http://localhost:5075/api/Companies`, requestOptions);
             return await response.json()
                 .then((data) => {
                     console.log(data)
                     if (response.ok) {
-                        addTask(data);
+                        addCompany(data);
                         form.resetFields();
                     }
                 },
                 (error) => console.log(error)
                 );
         };
-        createTasks();
+
+        const editCompanies = async (id: number | undefined) => {
+            const company: CompanyObj = {
+                id,
+                name,
+            }
+    
+            const requestOptions = {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(company)
+            };
+    
+            const response = await fetch(`http://localhost:5075/api/Companies/${id}`, requestOptions);
+            await response.json()
+                .then(
+                    (data) => {
+                        if (response.ok) {
+                            console.log(data)
+                            updateCompany(data);
+                            setIsEdit(false);
+                            form.resetFields();
+                        }
+                    },
+                    (error) => console.log(error)
+                );
+        };
+
+        if (isEdit)
+        {
+            console.log(editingCompany);
+            editCompanies(editingCompany?.id);
+        }
+        else createCompanies();
     };
 
     return (
         <Modal open={createModalIsShow}
-            title="Форма задания"
+            title="Форма компании"
             onCancel={() => showCreateModel(false)}
             footer={[
                 <Button
                     key="submitButton"
-                    form="projectForm"
+                    form="companyForm"
                     type="primary"
                     htmlType="submit"
                     onClick={() => showCreateModel(false)}>
@@ -87,12 +116,12 @@ const TaskCreate : React.FC<PropsType> = ({
                     Close
                 </Button>
             ]}>
-            <Form id="projectForm" onFinish={handleSubmit} form={form}>
-                <Form.Item name="name" label="Название задания" hasFeedback rules={[
+            <Form id="companyForm" onFinish={handleSubmit} form={form}>
+                <Form.Item name="name" label="Название компании" hasFeedback rules={[
                     {
                         required: true,
                         type: "string",
-                        message: "Введите название задания"
+                        message: "Введите название компании"
                     }
                 ]}>
                     <Input
@@ -107,4 +136,4 @@ const TaskCreate : React.FC<PropsType> = ({
         </Modal>
     );
 };
-export default TaskCreate;
+export default CompanyCreate;

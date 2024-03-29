@@ -1,42 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table, Input } from "antd";
+import { Button, Table } from "antd";
 import type { TableProps } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
-import { useLocation } from "react-router-dom";
 import CompanyObj from "../Entities/CompanyObj";
 import CompanyCreate from "../Companies/CompanyCreate";
 
 interface PropsType { }
 
-const Task : React.FC<PropsType> = () => {
+const Company : React.FC<PropsType> = () => {
 
-    const [tasks, setCompanies] = useState<Array<CompanyObj>>([]);
+    const [companies, setCompanies] = useState<Array<CompanyObj>>([]);
     const [createModalIsShow, showCreateModel] = useState<boolean>(false);
     const [editingCompany, setEditingCompany] = useState<CompanyObj>();
-    const location = useLocation();
 
-    const removeCompany = (Id: number | undefined) => setCompanies(tasks.filter(({ id }) => id !== Id));
+    const removeCompany = (removeId: number | undefined) => setCompanies(companies.filter(({ id }) => id !== removeId));
 
-    const updateCompanies = (task : CompanyObj) => {
+    const updateCompanies = (company : CompanyObj) => {
         setCompanies(
-            tasks.map((e) => {
-                if (e.id == task.id)
-                    return task;
+            companies.map((e) => {
+                if (e.id === company.id)
+                    return company;
                 return e;
             })
         )
     };
 
-    const addCompany = (task : CompanyObj) => setCompanies([...tasks, task]);
+    const addCompany = (company : CompanyObj) => setCompanies([...companies, company]);
 
     useEffect(() => {
-        const getTasks = async () => {
+        const getCompanies = async () => {
 
             const requestOptions: RequestInit = {
                 method: 'GET'
             };
 
-            await fetch(`http://localhost:7118/api/Companies`, requestOptions)
+            await fetch(`http://localhost:5075/api/Companies`, requestOptions)
                 .then(response => response.json())
                 .then(
                     (data) => {
@@ -46,7 +43,7 @@ const Task : React.FC<PropsType> = () => {
                     (error) => console.log(error)
                 );
         };
-        getTasks();
+        getCompanies();
     }, [createModalIsShow]);
 
     const deleteCompany = async (id: number | undefined) => {
@@ -54,7 +51,7 @@ const Task : React.FC<PropsType> = () => {
             method: 'DELETE'
         }
 
-        return await fetch(`http://localhost:7118/api/Companies/${id}`, requestOptions)
+        return await fetch(`http://localhost:5075/api/Companies/${id}`, requestOptions)
             .then((response) => {
                 if (response.ok) {
                     removeCompany(id);
@@ -76,39 +73,6 @@ const Task : React.FC<PropsType> = () => {
             title: "Название компании",
             dataIndex: "name",
             key: "name",
-            filterDropdown: ({
-                setSelectedKeys,
-                selectedKeys,
-                confirm,
-                clearFilters,
-            }) => (
-                <React.Fragment>
-                    <Input
-                        autoFocus
-                        placeholder="Введите название компании"
-                        value={selectedKeys[0]}
-                        onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                        onPressEnter={() => confirm()}
-                        onBlur={() => confirm()}>
-                    </Input>
-                    <Button onClick={() => confirm()} type="primary" key="serchButton">
-                        Поиск
-                    </Button>
-                    <Button 
-                        onClick={() => {
-                            clearFilters ? clearFilters() : setSelectedKeys([]);
-                            confirm();
-                        }}
-                        type="primary"
-                        danger
-                        key="dropFilter">
-                            Сброс фильтра
-                </Button>
-                </React.Fragment>
-            ),
-            filterIcon: () => <SearchOutlined />,
-            onFilter: (value, record) =>
-              record.name.toLowerCase().includes(value.toString().toLowerCase()),
         },
         {
             key: "Delete",
@@ -136,15 +100,16 @@ const Task : React.FC<PropsType> = () => {
     return (
         <React.Fragment>
             <CompanyCreate
+                editingCompany={editingCompany}
                 addCompany={addCompany}
+                updateCompany={updateCompanies}
                 createModalIsShow={createModalIsShow}
                 showCreateModel={showCreateModel}
             />
-            <h3>{location.state.currentProject.name}</h3>
             <Button onClick={(e) => showCreateModel(true)}>Добавить компанию</Button>
             <Table
                 key="CompaniesTable"
-                dataSource={tasks}
+                dataSource={companies}
                 columns={columns}
                 pagination={{pageSize: 15}}
                 scroll={{y: 1000}}
@@ -153,4 +118,4 @@ const Task : React.FC<PropsType> = () => {
         </React.Fragment>
     )
 };
-export default Task;
+export default Company;

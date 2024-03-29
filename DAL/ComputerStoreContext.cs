@@ -9,14 +9,14 @@ public partial class ComputerStoreContext : DbContext
 {
     public ComputerStoreContext()
     {
-        Database.EnsureDeleted();
+        //Database.EnsureDeleted();
         Database.EnsureCreated();
     }
 
     public ComputerStoreContext(DbContextOptions<ComputerStoreContext> options)
         : base(options)
     {
-        Database.EnsureDeleted();
+        //Database.EnsureDeleted();
         Database.EnsureCreated();
     }
 
@@ -54,6 +54,8 @@ public partial class ComputerStoreContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Company>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_dbo.Companies");

@@ -9,8 +9,22 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<ComputerStoreContext>(opt =>
-opt.UseInMemoryDatabase("ComputerStore"));
+/*builder.Services.AddDbContext<ComputerStoreContext>(opt =>
+opt.UseInMemoryDatabase("ComputerStore"));*/
+
+builder.Services.AddDbContext<ComputerStoreContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Companies"), b => b.MigrationsAssembly("Companies")));
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+    builder =>
+    {
+        builder.WithOrigins("http://localhost:3000")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+
+    });
+});
 
 builder.Services.AddControllers().AddJsonOptions(x =>
 x.JsonSerializerOptions.ReferenceHandler =
@@ -42,6 +56,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 
