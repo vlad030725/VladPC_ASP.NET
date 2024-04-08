@@ -17,9 +17,9 @@ const CompanyCreate : React.FC<PropsType> = ({
     createModalIsShow, 
     showCreateModel
 }) => {
-    const [form] = Form.useForm();
-    const [name, setName] = useState<string>("");
-    const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [form] = Form.useForm(); //Создание экземпляра формы
+    const [name, setName] = useState<string>(""); //Текущее значение названия компании
+    const [isEdit, setIsEdit] = useState<boolean>(false); //Редактриуется ли текущая компания
 
     useEffect(() => {
 

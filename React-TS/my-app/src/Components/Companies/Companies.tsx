@@ -3,14 +3,15 @@ import { Button, Table } from "antd";
 import type { TableProps } from "antd";
 import CompanyObj from "../Entities/CompanyObj";
 import CompanyCreate from "../Companies/CompanyCreate";
+import './Style.css';
 
 interface PropsType { }
 
 const Company : React.FC<PropsType> = () => {
 
-    const [companies, setCompanies] = useState<Array<CompanyObj>>([]);
-    const [createModalIsShow, showCreateModel] = useState<boolean>(false);
-    const [editingCompany, setEditingCompany] = useState<CompanyObj>();
+    const [companies, setCompanies] = useState<Array<CompanyObj>>([]); //Хранение состояния компаний
+    const [createModalIsShow, showCreateModel] = useState<boolean>(false); //Храниение состояния модального окна для создания компании
+    const [editingCompany, setEditingCompany] = useState<CompanyObj>(); //Хранение компании, которую редактируют
 
     const removeCompany = (removeId: number | undefined) => setCompanies(companies.filter(({ id }) => id !== removeId));
 
