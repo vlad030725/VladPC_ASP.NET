@@ -3,7 +3,6 @@ import { Button, Table } from "antd";
 import type { TableProps } from "antd";
 import CompanyObj from "../Entities/CompanyObj";
 import CompanyCreate from "../Companies/CompanyCreate";
-import './Style.css';
 
 interface PropsType { }
 
