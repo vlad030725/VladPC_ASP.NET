@@ -20,6 +20,13 @@ namespace BLL.Services
             this.db = db;
         }
 
+        public bool RegistationUser(RegisterViewDto model)
+        {
+            db.User.Create(new User { UserName = model.Login, PasswordHash = model.Password });
+
+            return true;
+        }
+
         public int? IdentificationUser(string login, string password)
         {
             try
@@ -46,8 +53,8 @@ namespace BLL.Services
         {
             db.User.Create(new User(){
                 Name = user.Name,
-                Login = user.Login,
-                Password = user.Password
+                UserName = user.Login,
+                PasswordHash = user.Password
             });
             SaveChanges();
         }
@@ -60,8 +67,8 @@ namespace BLL.Services
                 return;
             }
             u.Name = user.Name;
-            u.Login = user.Login;
-            u.Password = user.Password;
+            u.UserName = user.Login;
+            u.PasswordHash = user.Password;
             SaveChanges();
         }
 

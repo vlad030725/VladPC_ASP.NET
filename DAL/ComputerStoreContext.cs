@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using DomainModel;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace DAL;
 
-public partial class ComputerStoreContext : DbContext
+public partial class ComputerStoreContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
     public ComputerStoreContext()
     {
@@ -247,9 +249,9 @@ public partial class ComputerStoreContext : DbContext
 
         IList<User> UserData = new List<User>
         {
-            new User() { Id = 1, Name = "admin", Login = "admin", Password = "password" },
-            new User() { Id = 2, Name = "Юдин Владислав Сергеевич", Login = "vlad030725", Password = "1234" },
-            new User() { Id = 3, Name = "Дядя Фридрих", Login = "Fridrih", Password = "1234" }
+            new User() { Id = 1, Name = "admin", UserName = "admin", PasswordHash = "password" },
+            new User() { Id = 2, Name = "Юдин Владислав Сергеевич", UserName = "vlad030725", PasswordHash = "1234" },
+            new User() { Id = 3, Name = "Дядя Фридрих", UserName = "Friedrih", PasswordHash = "1234" }
         };
 
         modelBuilder.Entity<User>().HasData(UserData);

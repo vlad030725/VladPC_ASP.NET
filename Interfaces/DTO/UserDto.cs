@@ -13,8 +13,8 @@ namespace Interfaces.DTO
         {
             Id = user.Id;
             Name = user.Name;
-            Login = user.Login;
-            Password = user.Password;
+            Login = user.UserName;
+            Password = user.PasswordHash;
         }
 
         public UserDto() { }

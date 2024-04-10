@@ -5,12 +5,14 @@ using DAL.RepositoryPgs;
 using Interfaces.Services;
 using BLL.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using DomainModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-/*builder.Services.AddDbContext<ComputerStoreContext>(opt =>
-opt.UseInMemoryDatabase("ComputerStore"));*/
+builder.Services.AddIdentity<User, IdentityRole<int>>()
+.AddEntityFrameworkStores<ComputerStoreContext>();
 
 builder.Services.AddDbContext<ComputerStoreContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Companies"), b => b.MigrationsAssembly("Companies")));
 
@@ -58,6 +60,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
