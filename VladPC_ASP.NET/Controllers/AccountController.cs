@@ -1,4 +1,5 @@
-﻿using Interfaces.DTO;
+﻿using DomainModel;
+using Interfaces.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,10 @@ namespace VladPC_ASP.NET.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<UserDto> _userManager;
-        private readonly SignInManager<UserDto> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AccountController(UserManager<UserDto> userManager, SignInManager<UserDto> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -27,7 +28,8 @@ namespace VladPC_ASP.NET.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new() { Email = model.Email, UserName = model.Email };
+                User user = new() { UserName = model.Login, PasswordHash = model.Password };
+
                 // Добавление нового пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -62,36 +64,67 @@ namespace VladPC_ASP.NET.Controllers
             }
         }
 
-        // GET: api/<AccountController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<AccountController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<AccountController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("api/account/login")]
+        //[AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginViewDto model)
         {
+            if (ModelState.IsValid)
+            {
+                var result =
+                await _signInManager.PasswordSignInAsync(model.Login, model.Password, model.RememberMe, false);
+                if (result.Succeeded)
+                {
+                    return Ok(new { message = "Выполнен вход", userName = model.Login });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+                    var errorMsg = new
+                    {
+                        message = "Вход не выполнен",
+                        error = ModelState.Values.SelectMany(e => e.Errors.Select(er => er.ErrorMessage))
+                    };
+                    return Created("", errorMsg);
+                }
+            }
+            else
+            {
+                var errorMsg = new
+                {
+                    message = "Вход не выполнен",
+                    error = ModelState.Values.SelectMany(e => e.Errors.Select(er => er.ErrorMessage))
+                };
+                return Created("", errorMsg);
+            }
         }
 
-        // PUT api/<AccountController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost]
+        [Route("api/account/logoff")]
+        public async Task<IActionResult> LogOff()
         {
+            User usr = await GetCurrentUserAsync();
+            if (usr == null)
+            {
+                return Unauthorized(new { message = "Сначала выполните вход" });
+            }
+            // Удаление куки
+            await _signInManager.SignOutAsync();
+            return Ok(new { message = "Выполнен выход", userName = usr.UserName });
         }
 
-        // DELETE api/<AccountController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpGet]
+        [Route("api/account/isauthenticated")]
+        public async Task<IActionResult> IsAuthenticated()
         {
+            User usr = await GetCurrentUserAsync();
+            if (usr == null)
+            {
+                return Unauthorized(new { message = "Вы Гость. Пожалуйста, выполните вход" });
+            }
+            return Ok(new { message = "Сессия активна", userName = usr.UserName });
         }
+
+        private Task<User> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }
 }
