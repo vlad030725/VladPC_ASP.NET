@@ -1,6 +1,7 @@
 ﻿using DomainModel;
 using Interfaces.DTO;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace VladPC_ASP.NET.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {

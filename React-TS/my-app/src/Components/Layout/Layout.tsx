@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
 import { NavLink, DropdownMenu, DropdownToggle, UncontrolledDropdown, DropdownItem } from "reactstrap";
-//import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.css";
 import UserObj from "../Entities/UserObj";
 import { Layout as LayoutAntd, Menu } from "antd";
 //import "./Layout.css";

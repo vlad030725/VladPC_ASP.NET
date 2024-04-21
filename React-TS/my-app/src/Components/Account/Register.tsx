@@ -1,20 +1,13 @@
 import React, { useState } from "react";
-import { Input, Button, Form, Radio, Select } from "antd";
+import { Input, Button, Form } from "antd";
 import { Link } from "react-router-dom";
 import RegisterObj from "../Entities/RegisterObj";
 import { notification } from "antd";
-import axios from "axios";
-
-interface responseModel {
-  message: string;
-  error: Array<string>;
-}
 
 interface PropsType {}
 
 const Register: React.FC<PropsType> = () => {
-  // state variables for email and passwords
-  const [email, setEmail] = useState<string>("");
+  const [login, setLogin] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordConfirm, setConfirmPassword] = useState<string>("");
 
@@ -24,42 +17,43 @@ const Register: React.FC<PropsType> = () => {
     setError([]);
 
     const model: RegisterObj = {
-      email,
+      login: login,
       password,
       passwordConfirm
     };
 
     const register = async () => {
-        
-        const response = await axios.post<responseModel>("api/account/register", model);
 
-        if (response.status === 200) 
-        {
-          notification.success({
-            message: "Регистрация завершилась удачно",
-            placement: "topRight",
-            duration: 2,
-          });
-          if (response.data.error !== undefined) 
-          {
-            console.log(response.data.error);
-            setError(
-              ["Регистрация завершилась неудачно "].concat(response.data.error)
-            );
-          } 
-          else 
-          {
-            setError([response.data.message]);
-          }
-        } 
-        else 
-        {
-          notification.error({
-            message: "Регистрация завершилась неудачно",
-            placement: "topRight",
-            duration: 2,
-          });
+      const response = await fetch("http://localhost:5075/api/account/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(model),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        notification.success({
+          message: "Регистрация завершилась удачно",
+          placement: "topRight",
+          duration: 2,
+        });
+        if (data.error !== undefined) {
+          console.log(data.error);
+          setError(
+            ["Регистрация завершилась неудачно "].concat(data.error)
+          );
+        } else {
+          setError([data.message]);
         }
+      } else {
+        notification.error({
+          message: "Регистрация завершилась неудачно",
+          placement: "topRight",
+          duration: 2,
+        });
+      }
     };
 
     register();
@@ -75,7 +69,7 @@ const Register: React.FC<PropsType> = () => {
       <Form onFinish={handleSubmit} {...layout}>
         <h3>Регистрация</h3>
         <Form.Item
-          name="username"
+          name="login"
           label="Имя пользователя"
           hasFeedback
           rules={[
@@ -85,7 +79,7 @@ const Register: React.FC<PropsType> = () => {
             }
           ]}
         >
-          <Input name="email" onChange={(e) => setEmail(e.target.value)} />
+          <Input name="login" onChange={(e) => setLogin(e.target.value)} />
         </Form.Item>
         <Form.Item
           name="password"

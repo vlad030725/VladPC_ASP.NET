@@ -1,6 +1,6 @@
 interface LoginObj
 {
-    username: string;
+    login: string;
     password: string;
     rememberMe: boolean;
 }

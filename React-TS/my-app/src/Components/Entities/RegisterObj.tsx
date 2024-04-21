@@ -1,5 +1,5 @@
 interface RegisterObj {
-    email: string;
+    login: string;
     password: string;
     passwordConfirm: string;
   }

@@ -7,6 +7,7 @@ import TypesProduct from './Components/TypesProduct/TypesProduct';
 import Layout from './Components/Layout/Layout';
 import UserObj from './Components/Entities/UserObj';
 import Register from './Components/Account/Register';
+import Login from './Components/Account/Login';
 
 interface ResponseModel {
   message: string;
@@ -45,6 +46,7 @@ function App() {
           <Route path='/companies' element={<Companies/>}/>
           <Route path='/typesProduct' element={<TypesProduct/>}/>
           <Route path='/register' element={<Register/>}/>
+          <Route path='/login' element={<Login setUser={setUser}/>}/>
         </Route>
       </Routes>
       <NavigateButton/>
