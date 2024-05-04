@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
-import { NavLink, DropdownMenu, DropdownToggle, UncontrolledDropdown, DropdownItem } from "reactstrap";
+import { DropdownMenu, DropdownToggle, UncontrolledDropdown, DropdownItem } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import UserObj from "../Entities/UserObj";
 import { Layout as LayoutAntd, Menu } from "antd";
@@ -33,12 +33,9 @@ const Layout: React.FC<PropsType> = ({ user }) => {
         <div style={{ marginLeft: "auto" }}>
           <UncontrolledDropdown>
             <DropdownToggle caret color="dark" right>
-              Аккаунт
+                {user ? user.username : "Гость"}
             </DropdownToggle>
             <DropdownMenu dark right>
-              <DropdownItem text>
-                {user ? user.username : "Не авторизован"}
-              </DropdownItem>
               <DropdownItem
                 tag={Link}
                 to="/register"
