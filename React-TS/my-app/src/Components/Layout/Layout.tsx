@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
-import { DropdownMenu, DropdownToggle, UncontrolledDropdown, DropdownItem } from "reactstrap";
+import { DropdownMenu, DropdownToggle, UncontrolledDropdown, DropdownItem, NavLink } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import UserObj from "../Entities/UserObj";
 import { Layout as LayoutAntd, Menu } from "antd";
@@ -8,6 +8,32 @@ import { Layout as LayoutAntd, Menu } from "antd";
 
 const { Header, Content, Footer } = LayoutAntd;
 
+const defaultItems = [
+  {
+    label: (
+      <NavLink tag={Link} to="/">
+        VladPC
+      </NavLink>
+    ),
+    key: "1",
+  },
+  {
+    label: (
+      <NavLink tag={Link} to="/companies">
+        Комапании
+      </NavLink>
+    ),
+    key: "2",
+  },
+  {
+    label: (
+      <NavLink tag={Link} to="/typesProduct">
+        Типы продуктов
+      </NavLink>
+    ),
+    key: "3",
+  },
+];
 
 interface PropsType {
     user: UserObj | null;
@@ -29,6 +55,7 @@ const Layout: React.FC<PropsType> = ({ user }) => {
           theme="dark"
           mode="horizontal"
           style={{ minWidth: "800px" }}
+          items={ defaultItems }
         ></Menu>
         <div style={{ marginLeft: "auto" }}>
           <UncontrolledDropdown>

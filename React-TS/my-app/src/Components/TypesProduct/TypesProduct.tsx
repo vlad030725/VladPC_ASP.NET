@@ -33,7 +33,7 @@ const TypeProduct : React.FC<PropsType> = () => {
                 method: 'GET'
             };
 
-            await fetch(`http://localhost:5075/api/TypesProduct`, requestOptions)
+            await fetch(`http://localhost:5075/api/TypeProduct`, requestOptions)
                 .then(response => response.json())
                 .then(
                     (data) => {
@@ -51,7 +51,7 @@ const TypeProduct : React.FC<PropsType> = () => {
             method: 'DELETE'
         }
 
-        return await fetch(`http://localhost:5075/api/TypesProduct/${id}`, requestOptions)
+        return await fetch(`http://localhost:5075/api/TypeProduct/${id}`, requestOptions)
             .then((response) => {
                 if (response.ok) {
                     removeTypeProduct(id);

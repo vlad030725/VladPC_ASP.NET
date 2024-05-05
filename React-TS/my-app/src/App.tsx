@@ -4,6 +4,8 @@ import React from 'react';
 import './App.css';
 import Companies from './Components/Companies/Companies';
 import TypesProduct from './Components/TypesProduct/TypesProduct';
+import Products from './Components/Products/Products';
+import Catalog from './Components/Products/Catalog';
 import Layout from './Components/Layout/Layout';
 import UserObj from './Components/Entities/UserObj';
 import Register from './Components/Account/Register';
@@ -45,23 +47,14 @@ function App() {
           <Route index element={<h3>Магазин компьютерной техники "VladPC"</h3>}/>
           <Route path='/companies' element={<Companies/>}/>
           <Route path='/typesProduct' element={<TypesProduct/>}/>
+          <Route path='/products' element={<Products/>}/>
+          <Route path='/catalog' element={<Catalog/>}/>
           <Route path='/register' element={<Register/>}/>
           <Route path='/login' element={<Login setUser={setUser}/>}/>
         </Route>
       </Routes>
-      <NavigateButton/>
     </BrowserRouter>
   );
 }
-
-const NavigateButton: React.FC = () => {
-  return (
-    <Link to="/companies">
-      <button>
-        Companies
-      </button>
-    </Link>
-  );
-};
 
 export default App;

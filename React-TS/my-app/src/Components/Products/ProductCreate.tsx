@@ -1,35 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { Input, Modal, Button, Form } from "antd";
-import TypeProductObj from "../Entities/TypeProductObj";
+import ProductObj from "../Entities/ProductObj";
 
 interface PropsType {
-    editingTypeProduct: TypeProductObj | undefined;
-    addTypeProduct: (typeProduct: TypeProductObj) => void;
-    updateTypeProduct: (typeProduct: TypeProductObj) => void;
+    editingProduct: ProductObj | undefined;
+    addProduct: (product: ProductObj) => void;
+    updateProduct: (product: ProductObj) => void;
     createModalIsShow: boolean;
     showCreateModel: (value: boolean) => void;
 }
 
-const TypeProductCreate : React.FC<PropsType> = ({
-    editingTypeProduct,
-    addTypeProduct,
-    updateTypeProduct,
+const ProductCreate : React.FC<PropsType> = ({
+    editingProduct: editingProduct,
+    addProduct: addProduct,
+    updateProduct: updateProduct,
     createModalIsShow, 
     showCreateModel
 }) => {
     const [form] = Form.useForm(); //Создание экземпляра формы
     const [name, setName] = useState<string>(""); //Текущее значение названия компании
+    const [price, setPrice] = useState<number>(0); //Текущее значение цены
+    const [count, setCount] = useState<number>(0); //Текущее значение количества
+    const [catalogString, setCatalogString] = useState<string>(""); //Текущее значение строки каталога
     const [isEdit, setIsEdit] = useState<boolean>(false); //Редактриуется ли текущая компания
 
     useEffect(() => {
 
-        if (editingTypeProduct !== undefined)
+        if (editingProduct !== undefined)
         {
             form.setFieldsValue({
-                name: editingTypeProduct.name
+                name: editingProduct.name
             });
-            setName(editingTypeProduct.name);
-            console.log(editingTypeProduct.name)
+            setName(editingProduct.name);
+            setPrice(editingProduct.price);
+            setCount(editingProduct.count);
+            setCatalogString(editingProduct.catalogString);
+            console.log(editingProduct.name)
             setIsEdit(true);
         }
 
@@ -37,26 +43,29 @@ const TypeProductCreate : React.FC<PropsType> = ({
             form.resetFields();
             setIsEdit(false);
         }
-    }, [editingTypeProduct, form]);
+    }, [editingProduct, form]);
 
     const handleSubmit = (e: Event) => {
-        const createTypesProduct = async () => {
-            const typeProduct : TypeProductObj = {
-                name
+        const createProducts = async () => {
+            const product : ProductObj = {
+                name,
+                price,
+                count,
+                catalogString
             }
 
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(typeProduct)
+                body: JSON.stringify(product)
             };
 
-            const response = await fetch(`http://localhost:5075/api/TypeProduct`, requestOptions);
+            const response = await fetch(`http://localhost:5075/api/Product`, requestOptions);
             return await response.json()
                 .then((data) => {
                     console.log(data)
                     if (response.ok) {
-                        addTypeProduct(data);
+                        addProduct(data);
                         form.resetFields();
                     }
                 },
@@ -64,25 +73,28 @@ const TypeProductCreate : React.FC<PropsType> = ({
                 );
         };
 
-        const editTypesProduct = async (id: number | undefined) => {
-            const typeProduct: TypeProductObj = {
+        const editProducts = async (id: number | undefined) => {
+            const product: ProductObj = {
                 id,
                 name,
+                price,
+                count,
+                catalogString
             }
     
             const requestOptions = {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(typeProduct)
+                body: JSON.stringify(product)
             };
     
-            const response = await fetch(`http://localhost:5075/api/TypeProduct/${id}`, requestOptions);
+            const response = await fetch(`http://localhost:5075/api/Product/${id}`, requestOptions);
             await response.json()
                 .then(
                     (data) => {
                         if (response.ok) {
                             console.log(data)
-                            updateTypeProduct(data);
+                            updateProduct(data);
                             setIsEdit(false);
                             form.resetFields();
                         }
@@ -93,20 +105,20 @@ const TypeProductCreate : React.FC<PropsType> = ({
 
         if (isEdit)
         {
-            console.log(editingTypeProduct);
-            editTypesProduct(editingTypeProduct?.id);
+            console.log(editingProduct);
+            editProducts(editingProduct?.id);
         }
-        else createTypesProduct();
+        else createProducts();
     };
 
     return (
         <Modal open={createModalIsShow}
-            title="Форма типа продукта"
+            title="Форма компании"
             onCancel={() => showCreateModel(false)}
             footer={[
                 <Button
                     key="submitButton"
-                    form="typeProductForm"
+                    form="productForm"
                     type="primary"
                     htmlType="submit"
                     onClick={() => showCreateModel(false)}>
@@ -116,18 +128,18 @@ const TypeProductCreate : React.FC<PropsType> = ({
                     Close
                 </Button>
             ]}>
-            <Form id="typeProductForm" onFinish={handleSubmit} form={form}>
-                <Form.Item name="name" label="Название типа продукта" hasFeedback rules={[
+            <Form id="productForm" onFinish={handleSubmit} form={form}>
+                <Form.Item name="name" label="Название компании" hasFeedback rules={[
                     {
                         required: true,
                         type: "string",
-                        message: "Введите название типа продукта"
+                        message: "Введите название компании"
                     }
                 ]}>
                     <Input
-                        key="nameTypeProduct"
+                        key="nameProduct"
                         type="text"
-                        name="nameTypeProduct"
+                        name="nameProduct"
                         placeholder=""
                         value={name}
                         onChange={(e) => setName(e.target.value)} />
@@ -136,4 +148,4 @@ const TypeProductCreate : React.FC<PropsType> = ({
         </Modal>
     );
 };
-export default TypeProductCreate;
+export default ProductCreate;
