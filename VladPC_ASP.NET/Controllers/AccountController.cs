@@ -10,20 +10,23 @@ using Microsoft.AspNetCore.Mvc;
 namespace VladPC_ASP.NET.Controllers
 {
     [ApiController]
+    [EnableCors]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        //private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)//, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            //_roleManager = roleManager;
         }
 
         [HttpPost]
         [Route("api/account/register")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterViewDto model)
         {
             if (ModelState.IsValid)
@@ -34,6 +37,8 @@ namespace VladPC_ASP.NET.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // Установка роли User
+                    await _userManager.AddToRoleAsync(user, "user");
                     // Установка куки
                     await _signInManager.SignInAsync(user, false);
                     return Ok(new { message = "Добавлен новый пользователь: " + user.UserName });
@@ -73,9 +78,19 @@ namespace VladPC_ASP.NET.Controllers
             {
                 var result =
                 await _signInManager.PasswordSignInAsync(model.Login, model.Password, model.RememberMe, false);
+                
                 if (result.Succeeded)
                 {
-                    return Ok(new { message = "Выполнен вход", userName = model.Login });
+                    User _user = await _userManager.GetUserAsync(HttpContext.User);
+                    IList<string>? roles = await _userManager.GetRolesAsync(_user);
+                    string? userRole = roles.FirstOrDefault();
+                    //return Ok(new { message = "Выполнен вход", userName = model.Email, userRole });
+                    UserDto user = new UserDto()
+                    {
+                        UserName = model.Login,
+                        Password = model.Password
+                    };
+                    return Ok(new { message = "Выполнен вход", user });
                 }
                 else
                 {

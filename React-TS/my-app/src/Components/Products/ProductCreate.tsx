@@ -145,6 +145,16 @@ const ProductCreate : React.FC<PropsType> = ({
                         onChange={(e) => setName(e.target.value)} />
                 </Form.Item>
             </Form>
+            <Form id="productForm" onFinish={handleSubmit} form={form}>
+                <Form.Item name="price" label="Цена, руб." hasFeedback rules={[
+                    {
+                        required: true,
+                        type: "string",
+                        message: "Введите название компании"
+                    }
+                ]}>
+                </Form.Item>
+            </Form>
         </Modal>
     );
 };

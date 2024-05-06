@@ -60,7 +60,7 @@ const Layout: React.FC<PropsType> = ({ user }) => {
         <div style={{ marginLeft: "auto" }}>
           <UncontrolledDropdown>
             <DropdownToggle caret color="dark" right>
-                {user ? user.username : "Гость"}
+                {user ? user.userName : "Гость"}
             </DropdownToggle>
             <DropdownMenu dark right>
               <DropdownItem
@@ -79,7 +79,7 @@ const Layout: React.FC<PropsType> = ({ user }) => {
               </DropdownItem>
               <DropdownItem
                 tag={Link}
-                to="/logout"
+                to="/logoff"
                 disabled={user ? false : true}
               >
                 Выход

@@ -10,6 +10,7 @@ import Layout from './Components/Layout/Layout';
 import UserObj from './Components/Entities/UserObj';
 import Register from './Components/Account/Register';
 import Login from './Components/Account/Login';
+import Logoff from './Components/Account/Logoff';
 
 interface ResponseModel {
   message: string;
@@ -24,6 +25,9 @@ function App() {
     const getUser = async () => {
       const requestOptions = {
         method: "GET",
+        headers: {
+          "Access-Control-Allow-Credentials": "true"
+        },
       };
 
       return await fetch("api/account/isauthenticated", requestOptions)
@@ -44,13 +48,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout user={user}/>}>
-          <Route index element={<h3>Магазин компьютерной техники "VladPC"</h3>}/>
+          {/* <Route index element={<h3>Магазин компьютерной техники "VladPC"</h3>}/> */}
           <Route path='/companies' element={<Companies/>}/>
           <Route path='/typesProduct' element={<TypesProduct/>}/>
           <Route path='/products' element={<Products/>}/>
           <Route path='/catalog' element={<Catalog/>}/>
           <Route path='/register' element={<Register/>}/>
           <Route path='/login' element={<Login setUser={setUser}/>}/>
+          <Route path='/logoff' element={<Logoff setUser={setUser}/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

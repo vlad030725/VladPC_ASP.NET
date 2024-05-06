@@ -31,7 +31,7 @@ namespace BLL.Services
         {
             try
             {
-                return db.User.GetList().Select(i => new UserDto(i)).Single(i => i.Login == login && i.Password == password).Id;
+                return db.User.GetList().Select(i => new UserDto(i)).Single(i => i.UserName == login && i.Password == password).Id;
             }
             catch
             {
@@ -53,7 +53,7 @@ namespace BLL.Services
         {
             db.User.Create(new User(){
                 Name = user.Name,
-                UserName = user.Login,
+                UserName = user.UserName,
                 PasswordHash = user.Password
             });
             SaveChanges();
@@ -67,7 +67,7 @@ namespace BLL.Services
                 return;
             }
             u.Name = user.Name;
-            u.UserName = user.Login;
+            u.UserName = user.UserName;
             u.PasswordHash = user.Password;
             SaveChanges();
         }

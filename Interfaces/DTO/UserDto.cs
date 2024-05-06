@@ -13,7 +13,7 @@ namespace Interfaces.DTO
         {
             Id = user.Id;
             Name = user.Name;
-            Login = user.UserName;
+            UserName = user.UserName;
             Password = user.PasswordHash;
         }
 
@@ -23,7 +23,7 @@ namespace Interfaces.DTO
 
         public string Name { get; set; }
 
-        public string Login { get; set; }
+        public string UserName { get; set; }
 
         public string Password { get; set; }
     }

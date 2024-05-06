@@ -32,7 +32,7 @@ namespace BLL.Services
                     CreatedDate = (DateTime)customs[i].CreatedDate,
                     TypeTransaction = "Заказ",
                     Sum = (int)customs[i].Sum,
-                    UserLogin = GetUserCustom(customs[i].Id).Login
+                    UserLogin = GetUserCustom(customs[i].Id).UserName
                 });
             }
 

@@ -42,7 +42,7 @@ namespace VladPC_ASP.NET.Controllers
 
             await Task.Run(() => _userService.CreateUser(new UserDto() { 
                 Name = value.Name, 
-                Login = value.Login, 
+                UserName = value.UserName, 
                 Password = value.Password
             }));
             return CreatedAtAction("Get", new { Id = value.Id }, value);

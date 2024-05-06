@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddIdentity<User, IdentityRole<int>>()
 .AddEntityFrameworkStores<ComputerStoreContext>();
 
-builder.Services.AddDbContext<ComputerStoreContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Companies"), b => b.MigrationsAssembly("Companies")));
+builder.Services.AddDbContext<ComputerStoreContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Companies"), b => b.MigrationsAssembly("dataaccess")));
 
 builder.Services.AddCors(options =>
 {
@@ -51,6 +51,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var ComputerStoreContext = scope.ServiceProvider.GetRequiredService<ComputerStoreContext>();
+    //----
+    await IdentitySeed.CreateUserRoles(scope.ServiceProvider);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

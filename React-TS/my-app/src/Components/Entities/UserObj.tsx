@@ -1,5 +1,5 @@
 interface UserObj {
-    username: string;
+    userName: string;
     roles: string;
     isAuthenticated: boolean;
 }

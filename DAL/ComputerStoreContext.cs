@@ -19,6 +19,7 @@ public partial class ComputerStoreContext : IdentityDbContext<User, IdentityRole
         : base(options)
     {
         //Database.EnsureDeleted();
+        //Database.EnsureDeleted();
         Database.EnsureCreated();
     }
 
@@ -249,7 +250,7 @@ public partial class ComputerStoreContext : IdentityDbContext<User, IdentityRole
 
         IList<User> UserData = new List<User>
         {
-            new User() { Id = 1, Name = "admin", UserName = "admin", PasswordHash = "password" },
+            new User() { Id = 1, Name = "blbjkb", UserName = "blbjkb", PasswordHash = "1234" },
             new User() { Id = 2, Name = "Юдин Владислав Сергеевич", UserName = "vlad030725", PasswordHash = "1234" },
             new User() { Id = 3, Name = "Дядя Фридрих", UserName = "Friedrih", PasswordHash = "1234" }
         };

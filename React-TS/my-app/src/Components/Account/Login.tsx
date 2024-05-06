@@ -32,12 +32,14 @@ const Login: React.FC<PropsType> = ({ setUser }) => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Access-Control-Allow-Credentials": "true"
             },
             body: JSON.stringify(model),
           });
   
           if (response.ok) {
             const data = await response.json();
+            console.log(data);
             setMessage(["Вход завершился удачно"]);
             notification.success({
               message: "Вход завершился удачно",
@@ -45,7 +47,8 @@ const Login: React.FC<PropsType> = ({ setUser }) => {
               duration: 2,
             });
   
-            setUser(data.responseUser);
+            setUser(data.user);
+            //console.log(data);
             // Переход на главную страницу
             navigate("/");
           } else {
