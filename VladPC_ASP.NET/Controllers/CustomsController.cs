@@ -32,6 +32,11 @@ namespace VladPC_ASP.NET.Controllers
         {
             return await Task.Run(() => _customService.GetCustom(id));
         }
+        [HttpGet("user/{idUser}")]
+        public async Task<ActionResult<CustomDto>> GetInCart(int idUser)
+        {
+            return await Task.Run(() => _customService.GetCustomInCart(idUser));
+        }
 
         // POST api/<CustomsController>
         [HttpPost]

@@ -19,6 +19,8 @@ namespace Interfaces.DTO
             Product = products.Where(i => i.Id == IdProduct).Single();
         }
 
+        public CustomRowDto() { }
+
         public int Id { get; set; }
 
         public int? IdCustom { get; set; }

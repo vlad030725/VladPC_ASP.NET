@@ -43,7 +43,7 @@ namespace Interfaces.Services
 
         void DeleteCustomRow(int Id);
 
-        void AddCustomRow(ProductDto row, int IdUser);
+        void AddCustomRow(CustomRowDto customRowDto);
 
         void UpdateCustom(CustomDto custom);
 

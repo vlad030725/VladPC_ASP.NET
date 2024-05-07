@@ -19,11 +19,19 @@ const defaultItems = [
   },
   {
     label: (
-      <NavLink tag={Link} to="/companies">
-        Комапании
+      <NavLink tag={Link} to="/catalog">
+        Каталог
       </NavLink>
     ),
     key: "2",
+  },
+  {
+    label: (
+      <NavLink tag={Link} to="/companies">
+        Компании
+      </NavLink>
+    ),
+    key: "3",
   },
   {
     label: (
@@ -31,7 +39,7 @@ const defaultItems = [
         Типы продуктов
       </NavLink>
     ),
-    key: "3",
+    key: "4",
   },
 ];
 

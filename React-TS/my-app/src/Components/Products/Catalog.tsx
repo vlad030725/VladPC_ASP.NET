@@ -3,14 +3,37 @@ import { Button, Table } from "antd";
 import type { TableProps } from "antd";
 import ProductObj from "../Entities/ProductObj";
 import ProductCreate from "../Products/ProductCreate";
+import UserObj from "../Entities/UserObj";
+import CustomRowObj from "../Entities/CustomRowObj";
 
-interface PropsType { }
+interface PropsType {
+    user: UserObj | null;
+}
 
-const Product : React.FC<PropsType> = () => {
+const Product : React.FC<PropsType> = ({user}) => {
 
     const [products, setProducts] = useState<Array<ProductObj>>([]); //Хранение состояния продукта
     const [createModalIsShow, showCreateModel] = useState<boolean>(false); //Храниение состояния модального окна для создания продукта
     const [editingProduct, setEditingProduct] = useState<ProductObj>(); //Хранение компании, которую редактируют
+
+    const [idProduct, setIdProduct] = useState<number>(0);
+    const [idCustom, setIdCustom] = useState<number>(0);
+
+    // const getCustomInCart = () => {
+    //     const requestOptions: RequestInit = {
+    //         method: 'GET'
+    //     };
+
+    //     await fetch(`http://localhost:5075/api/Custom/user/${user.}`, requestOptions)
+    //             .then(response => response.json())
+    //             .then(
+    //                 (data) => {
+    //                     console.log(data);
+    //                     setProducts(data);
+    //                 },
+    //                 (error) => console.log(error)
+    //             );
+    // };
 
     const removeProduct = (removeId: number | undefined) => setProducts(products.filter(({ id }) => id !== removeId));
 
@@ -60,6 +83,24 @@ const Product : React.FC<PropsType> = () => {
             },
                 (error) => console.log(error)
             )
+    };
+
+    const AddCustomRow = async (product : ProductObj) => {
+        //setIdProduct(product.id as number);
+        const customRow : CustomRowObj = {
+            idProduct: product.id as number,
+            idCustom: 0,
+            price: product.price,
+            count: 1
+        }
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(customRow)
+        };
+
+        const response = await fetch(`http://localhost:5075/api/CustomRows`, requestOptions);
     };
 
     const editProduct = (obj : ProductObj) => {

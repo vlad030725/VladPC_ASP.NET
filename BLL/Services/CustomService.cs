@@ -129,13 +129,14 @@ namespace BLL.Services
             }
         }
 
-        public void AddCustomRow(ProductDto pr, int IdUser)
+        public void AddCustomRow(CustomRowDto customRowDto)
         {
+            ProductDto product = GetProduct((int)customRowDto.IdProduct);
             db.CustomRow.Create(new CustomRow()
             {
-                IdCustom = GetCustomInCart(IdUser).Id,
-                IdProduct = pr.Id,
-                Price = pr.Price,
+                IdCustom = customRowDto.IdCustom,
+                IdProduct = customRowDto.IdProduct,
+                Price = product.Price,
                 Count = 1
             });
             Save();

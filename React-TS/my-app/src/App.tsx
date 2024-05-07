@@ -52,7 +52,7 @@ function App() {
           <Route path='/companies' element={<Companies/>}/>
           <Route path='/typesProduct' element={<TypesProduct/>}/>
           <Route path='/products' element={<Products/>}/>
-          <Route path='/catalog' element={<Catalog/>}/>
+          <Route path='/catalog' element={<Catalog user={user}/>}/>
           <Route path='/register' element={<Register/>}/>
           <Route path='/login' element={<Login setUser={setUser}/>}/>
           <Route path='/logoff' element={<Logoff setUser={setUser}/>}/>
