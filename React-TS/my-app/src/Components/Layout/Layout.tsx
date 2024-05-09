@@ -11,7 +11,7 @@ const { Header, Content, Footer } = LayoutAntd;
 const defaultItems = [
   {
     label: (
-      <NavLink tag={Link} to="/">
+      <NavLink tag={Link} to="/" style={{}}>
         VladPC
       </NavLink>
     ),
@@ -19,7 +19,7 @@ const defaultItems = [
   },
   {
     label: (
-      <NavLink tag={Link} to="/catalog">
+      <NavLink tag={Link} to="/catalog" style={{}}>
         Каталог
       </NavLink>
     ),
@@ -27,19 +27,27 @@ const defaultItems = [
   },
   {
     label: (
-      <NavLink tag={Link} to="/companies">
-        Компании
+      <NavLink tag={Link} to="/profile" style={{}}>
+        Профиль
       </NavLink>
     ),
     key: "3",
   },
   {
     label: (
-      <NavLink tag={Link} to="/typesProduct">
-        Типы продуктов
+      <NavLink tag={Link} to="/companies" style={{}}>
+        Компании
       </NavLink>
     ),
     key: "4",
+  },
+  {
+    label: (
+      <NavLink tag={Link} to="/typesProduct" style={{}}>
+        Типы продуктов
+      </NavLink>
+    ),
+    key: "5",
   },
 ];
 
@@ -57,13 +65,17 @@ const Layout: React.FC<PropsType> = ({ user }) => {
           top: 0,
           zIndex: 1,
           width: "100%",
+          backgroundColor: "#38354f"
         }}
       >
         <Menu
           theme="dark"
           mode="horizontal"
-          style={{ minWidth: "800px" }}
+          style={{ minWidth: "800px",
+          backgroundColor: "#38354f"
+          }}
           items={ defaultItems }
+
         ></Menu>
         <div style={{ marginLeft: "auto" }}>
           <UncontrolledDropdown>

@@ -49,6 +49,8 @@ namespace Interfaces.Services
 
         void DeleteCustom(int Id);
 
+        int SearchCustom(int idCustomRow);
+
         void MakeCustom(int IdUser);
 
         void CreateCustom(CustomDto custom);

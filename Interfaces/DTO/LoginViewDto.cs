@@ -9,6 +9,7 @@ namespace Interfaces.DTO
 {
     public class LoginViewDto
     {
+        public int Id { get; set; }
         [Required]
         [Display(Name = "Login")]
         public string Login { get; set; }

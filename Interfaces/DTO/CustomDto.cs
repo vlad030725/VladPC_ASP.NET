@@ -33,7 +33,7 @@ namespace Interfaces.DTO
 
         public DateTime? CreatedDate { get; set; }
 
-        public List<CustomRowDto> CustomRows { get; set; }
-        public User User { get; set; }
+        public List<CustomRowDto>? CustomRows { get; set; }
+        public User? User { get; set; }
     }
 }

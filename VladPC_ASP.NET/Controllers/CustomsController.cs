@@ -40,27 +40,27 @@ namespace VladPC_ASP.NET.Controllers
 
         // POST api/<CustomsController>
         [HttpPost]
-        public async Task<ActionResult<CustomDto>> Post(CustomDto value)
+        public async Task<ActionResult<CustomDto>> Post(CustomDto custom)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             await Task.Run(() => _customService.CreateCustom(
                 new CustomDto { 
-                    IdUser = value.IdUser, 
-                    IdStatus = value.IdStatus,
-                    IdPromoCode = value.IdPromoCode,
-                    Sum = value.Sum
+                    IdUser = custom.IdUser, 
+                    IdStatus = custom.IdStatus,
+                    IdPromoCode = custom.IdPromoCode,
+                    Sum = custom.Sum
                 }));
-            return CreatedAtAction("Get", new { Id = value.Id }, value);
+            return CreatedAtAction("Get", new { Id = custom.Id }, custom);
         }
 
         // PUT api/<CustomsController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<CustomDto>> Put(CustomDto value)
+        public async Task<ActionResult<CustomDto>> Put(CustomDto custom)
         {
-            await Task.Run(() => _customService.UpdateCustom(value));
-            return CreatedAtAction("Get", new { Id = value.Id }, value);
+            await Task.Run(() => _customService.MakeCustom((int)custom.IdUser));
+            return CreatedAtAction("Get", new { Id = custom.Id }, custom);
         }
 
         // DELETE api/<CustomsController>/5

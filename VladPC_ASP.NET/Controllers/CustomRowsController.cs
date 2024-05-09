@@ -27,6 +27,12 @@ namespace VladPC_ASP.NET.Controllers
             return await Task.Run(() => _customService.GetCustomRowsOneCustom(idCustom));
         }
 
+        [HttpGet("cart/{idUser}")]
+        public async Task<ActionResult<IEnumerable<CustomRowDto>>> GetCart(int idUser)
+        {
+            return await Task.Run(() => _customService.GetCustomInCart(idUser).CustomRows);
+        }
+
         // GET api/<CustomRowsController>/5
         //[HttpGet("{id}")]
         //public string Get(int id)
@@ -36,30 +42,46 @@ namespace VladPC_ASP.NET.Controllers
 
         // POST api/<CustomRowsController>
         [HttpPost]
-        public async Task<ActionResult<CustomRowDto>> Post(CustomRowDto value)
+        public async Task<ActionResult<CustomRowDto>> Post(CustomRowDto customRowDto)
         {
+            User usr = await GetCurrentUserAsync();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            //if (_userManager.GetUserAsync(HttpContext.User).Result == null)
+            //    return Unauthorized(new { message = "Вы Гость. Пожалуйста, выполните вход" });
 
-            await Task.Run(() => _customService.AddCustomRow(new CustomRowDto()
+
+            CustomRowDto customRow = new CustomRowDto()
             {
-                IdProduct = value.IdProduct,
-                IdCustom = _userManager.GetUserAsync(HttpContext.User).Result.Id
-            }));
-            return CreatedAtAction("Get", new { Id = value.Id }, value);
+                IdProduct = customRowDto.IdProduct,
+                IdCustom = _customService.GetCustomInCart((int)customRowDto.IdCustom).Id,
+                Price = 0,
+                Count = 1
+            };
+
+            await Task.Run(() => _customService.AddCustomRow(customRow));
+            return CreatedAtAction("Get", new { idCustom = customRow.IdCustom }, customRow);
         }
 
 
         // PUT api/<CustomRowsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult<CustomRowDto>> Put(CustomRowDto customRowDto)
         {
+            if (_customService.GetProduct((int)customRowDto.IdProduct).Count >= customRowDto.Count && customRowDto.Count > 0)
+                await Task.Run(() => _customService.UpdateCustomRow(customRowDto));
+            else
+                return BadRequest();
+            return CreatedAtAction("Get", new { idCustom = _customService.SearchCustom(customRowDto.Id) }, customRowDto);
         }
 
         // DELETE api/<CustomRowsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async void Delete(int id)
         {
+            await Task.Run(() => _customService.DeleteCustomRow(id));
         }
+
+        private Task<User> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }
 }

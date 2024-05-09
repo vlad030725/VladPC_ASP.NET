@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import LoginObj from "../Entities/LoginObj";
 import UserObj from "../Entities/UserObj";
 import { notification } from "antd";
+import axios from 'axios';
 
 
 interface PropsType {
@@ -12,6 +13,7 @@ interface PropsType {
 }
 
 const Login: React.FC<PropsType> = ({ setUser }) => {
+  const [id, setId] = useState<number>(0);
   const [login, setLogin] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [rememberMe, setRememberme] = useState<boolean>(false);
@@ -21,6 +23,7 @@ const Login: React.FC<PropsType> = ({ setUser }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setMessage([]);
     const model: LoginObj = {
+      id,
       login,
       password,
       rememberMe,
@@ -28,18 +31,13 @@ const Login: React.FC<PropsType> = ({ setUser }) => {
 
     const loginFunc = async () => {
         try {
-          const response = await fetch("http://localhost:5075/api/account/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Credentials": "true"
-            },
-            body: JSON.stringify(model),
-          });
-  
-          if (response.ok) {
-            const data = await response.json();
-            console.log(data);
+            const response = await axios.post('http://localhost:5075/api/account/login', model, {
+            withCredentials: true, // включить куки в запросы
+          })
+          
+          console.log(response);
+
+          if (response.status === 200) {
             setMessage(["Вход завершился удачно"]);
             notification.success({
               message: "Вход завершился удачно",
@@ -47,8 +45,7 @@ const Login: React.FC<PropsType> = ({ setUser }) => {
               duration: 2,
             });
   
-            setUser(data.user);
-            //console.log(data);
+            setUser(response.data.user);
             // Переход на главную страницу
             navigate("/");
           } else {
@@ -60,6 +57,7 @@ const Login: React.FC<PropsType> = ({ setUser }) => {
             });
           }
         } catch (error) {
+          console.log(error);
           setMessage(["Неправильный логин или пароль"]);
         }
       };

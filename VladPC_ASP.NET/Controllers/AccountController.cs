@@ -76,17 +76,17 @@ namespace VladPC_ASP.NET.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result =
-                await _signInManager.PasswordSignInAsync(model.Login, model.Password, model.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(model.Login, model.Password, model.RememberMe, false);
                 
                 if (result.Succeeded)
                 {
-                    User _user = await _userManager.GetUserAsync(HttpContext.User);
-                    IList<string>? roles = await _userManager.GetRolesAsync(_user);
+                    User? _user = await _userManager.GetUserAsync(HttpContext.User);
+                    IEnumerable<string> roles = await _userManager.GetRolesAsync(_user);
                     string? userRole = roles.FirstOrDefault();
                     //return Ok(new { message = "Выполнен вход", userName = model.Email, userRole });
                     UserDto user = new UserDto()
                     {
+                        Id = _user.Id,
                         UserName = model.Login,
                         Password = model.Password
                     };
@@ -132,12 +132,12 @@ namespace VladPC_ASP.NET.Controllers
         [Route("api/account/isauthenticated")]
         public async Task<IActionResult> IsAuthenticated()
         {
-            User usr = await GetCurrentUserAsync();
-            if (usr == null)
+            User user = await GetCurrentUserAsync();
+            if (user == null)
             {
                 return Unauthorized(new { message = "Вы Гость. Пожалуйста, выполните вход" });
             }
-            return Ok(new { message = "Сессия активна", userName = usr.UserName });
+            return Ok(new { message = "Сессия активна", user });
         }
 
         private Task<User> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);

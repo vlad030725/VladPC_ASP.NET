@@ -14,6 +14,7 @@ namespace Interfaces.DTO
             Id = r.Id;
             IdCustom = r.IdCustom;
             IdProduct = r.IdProduct;
+            ProductName = products.First(i => i.Id == IdProduct).Name;
             Price = r.Price;
             Count = r.Count;
             Product = products.Where(i => i.Id == IdProduct).Single();
@@ -27,10 +28,12 @@ namespace Interfaces.DTO
 
         public int? IdProduct { get; set; }
 
+        public string? ProductName { get; set; }
+
         public int? Price { get; set; }
 
         public int? Count { get; set; }
 
-        public ProductDto Product { get; set; }
+        public ProductDto? Product { get; set; }
     }
 }

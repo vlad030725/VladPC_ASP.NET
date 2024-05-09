@@ -3,6 +3,7 @@ import { Input, Button, Form } from "antd";
 import { Link } from "react-router-dom";
 import RegisterObj from "../Entities/RegisterObj";
 import { notification } from "antd";
+import axios from 'axios';
 
 interface PropsType {}
 
@@ -23,36 +24,30 @@ const Register: React.FC<PropsType> = () => {
     };
 
     const register = async () => {
-
-      const response = await fetch("http://localhost:5075/api/account/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(model),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
+      try {
+        const response = await axios.post("http://localhost:5075/api/account/register", model, {
+          withCredentials: true,
+        });
+    
         notification.success({
           message: "Регистрация завершилась удачно",
           placement: "topRight",
           duration: 2,
         });
-        if (data.error !== undefined) {
-          console.log(data.error);
-          setError(
-            ["Регистрация завершилась неудачно "].concat(data.error)
-          );
+    
+        if (response.data.error !== undefined) {
+          console.log(response.data.error);
+          setError(["Регистрация завершилась неудачно "].concat(response.data.error));
         } else {
-          setError([data.message]);
+          setError([response.data.message]);
         }
-      } else {
+      } catch (error) {
         notification.error({
           message: "Регистрация завершилась неудачно",
           placement: "topRight",
           duration: 2,
         });
+        console.error(error);
       }
     };
 

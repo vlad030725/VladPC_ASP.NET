@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table } from "antd";
+import { Button, Table, notification } from "antd";
 import type { TableProps } from "antd";
 import ProductObj from "../Entities/ProductObj";
 import ProductCreate from "../Products/ProductCreate";
 import UserObj from "../Entities/UserObj";
 import CustomRowObj from "../Entities/CustomRowObj";
+import { useNavigate } from "react-router-dom";
 
 interface PropsType {
     user: UserObj | null;
@@ -13,44 +14,12 @@ interface PropsType {
 const Product : React.FC<PropsType> = ({user}) => {
 
     const [products, setProducts] = useState<Array<ProductObj>>([]); //Хранение состояния продукта
-    const [createModalIsShow, showCreateModel] = useState<boolean>(false); //Храниение состояния модального окна для создания продукта
-    const [editingProduct, setEditingProduct] = useState<ProductObj>(); //Хранение компании, которую редактируют
-
-    const [idProduct, setIdProduct] = useState<number>(0);
-    const [idCustom, setIdCustom] = useState<number>(0);
-
-    // const getCustomInCart = () => {
-    //     const requestOptions: RequestInit = {
-    //         method: 'GET'
-    //     };
-
-    //     await fetch(`http://localhost:5075/api/Custom/user/${user.}`, requestOptions)
-    //             .then(response => response.json())
-    //             .then(
-    //                 (data) => {
-    //                     console.log(data);
-    //                     setProducts(data);
-    //                 },
-    //                 (error) => console.log(error)
-    //             );
-    // };
-
-    const removeProduct = (removeId: number | undefined) => setProducts(products.filter(({ id }) => id !== removeId));
-
-    const updateProducts = (product : ProductObj) => {
-        setProducts(
-            products.map((e) => {
-                if (e.id === product.id)
-                    return product;
-                return e;
-            })
-        )
-    };
-
-    const addProduct = (product : ProductObj) => setProducts([...products, product]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getProducts = async () => {
+
+            console.log(user);
 
             const requestOptions: RequestInit = {
                 method: 'GET'
@@ -67,46 +36,48 @@ const Product : React.FC<PropsType> = ({user}) => {
                 );
         };
         getProducts();
-    }, [createModalIsShow]);
+    }, []);
 
-    const deleteProduct = async (id: number | undefined) => {
-        const requestOptions: RequestInit = {
-            method: 'DELETE'
+    const AddCustomRow = async (idProduct: number) => {
+        console.log('idProduct:', idProduct);
+        console.log("Попытка добавить в корзину", user);
+
+        const customRow: CustomRowObj = {
+            idProduct: idProduct,
+            idCustom: Number(user?.id),
+            price: 0,
+            count: 0
         }
 
-        return await fetch(`http://localhost:5075/api/Product/${id}`, requestOptions)
-            .then((response) => {
-                if (response.ok) {
-                    removeProduct(id);
-                    console.log(id);
-                }
-            },
-                (error) => console.log(error)
-            )
-    };
-
-    const AddCustomRow = async (product : ProductObj) => {
-        //setIdProduct(product.id as number);
-        const customRow : CustomRowObj = {
-            idProduct: product.id as number,
-            idCustom: 0,
-            price: product.price,
-            count: 1
-        }
+        console.log(customRow);
 
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Credentials": "true"
+             },
             body: JSON.stringify(customRow)
         };
 
         const response = await fetch(`http://localhost:5075/api/CustomRows`, requestOptions);
-    };
 
-    const editProduct = (obj : ProductObj) => {
-        setEditingProduct(obj);
-        console.log(obj)
-        showCreateModel(true);
+        return await response.json()
+                .then((data) => {
+                    console.log(data)
+                    if (response.ok) {
+                        notification.success({
+                            message: "Товар добавлен в корзину",
+                            placement: "topRight",
+                            duration: 2,
+                          });
+                    }
+                    else if (response.status === 401) {
+                        navigate("/login");
+                    }
+                },
+                (error) => console.log(error)
+                );
     };
 
     const columns : TableProps<ProductObj>["columns"] = [
@@ -139,7 +110,10 @@ const Product : React.FC<PropsType> = ({user}) => {
             render: (row : ProductObj) => (
                 <Button key="deleteButton"
                         type="primary"
-                        onClick={() => deleteProduct(row.id)}>
+                        onClick={() => row.id !== undefined && row.id !== null && row.id !== 0?
+                            AddCustomRow(row.id as number):
+                            console.error('row.id is undefined or null')
+                            }>
                             Добавить в корзину
                 </Button>
             ),

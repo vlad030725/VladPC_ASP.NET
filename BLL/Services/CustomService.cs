@@ -132,14 +132,20 @@ namespace BLL.Services
         public void AddCustomRow(CustomRowDto customRowDto)
         {
             ProductDto product = GetProduct((int)customRowDto.IdProduct);
-            db.CustomRow.Create(new CustomRow()
-            {
-                IdCustom = customRowDto.IdCustom,
-                IdProduct = customRowDto.IdProduct,
-                Price = product.Price,
-                Count = 1
-            });
+            if (!GetCustom((int)customRowDto.IdCustom).CustomRows.Select(i => i.IdProduct).Contains(customRowDto.IdProduct))
+                db.CustomRow.Create(new CustomRow()
+                {
+                    IdCustom = customRowDto.IdCustom,
+                    IdProduct = customRowDto.IdProduct,
+                    Price = product.Price,
+                    Count = 1
+                });
             Save();
+        }
+
+        public int SearchCustom(int idCustomRow)
+        {
+            return (int)db.CustomRow.GetList().Single(i => i.Id == idCustomRow).IdCustom;
         }
 
         public void MakeCustom(int IdUser)

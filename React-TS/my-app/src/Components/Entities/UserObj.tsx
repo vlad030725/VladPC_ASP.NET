@@ -1,7 +1,8 @@
 interface UserObj {
-    userName: string;
-    roles: string;
-    isAuthenticated: boolean;
+    id?: number
+    userName: string
+    roles: string
+    isAuthenticated: boolean
 }
   
 export default UserObj;
