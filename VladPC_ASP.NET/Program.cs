@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddIdentity<User, IdentityRole<int>>()
 .AddEntityFrameworkStores<ComputerStoreContext>();
 
-builder.Services.AddDbContext<ComputerStoreContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Companies"), b => b.MigrationsAssembly("dataaccess")));
+builder.Services.AddDbContext<ComputerStoreContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Companies"), b => b.MigrationsAssembly("VladPC_ASP.NET")));
 
 builder.Services.AddCors(options =>
 {
@@ -24,7 +24,6 @@ builder.Services.AddCors(options =>
         builder.WithOrigins("http://localhost:3000")
         .AllowAnyHeader()
         .AllowAnyMethod();
-
     });
 });
 
@@ -57,6 +56,7 @@ using (var scope = app.Services.CreateScope())
     var ComputerStoreContext = scope.ServiceProvider.GetRequiredService<ComputerStoreContext>();
     //----
     await IdentitySeed.CreateUserRoles(scope.ServiceProvider);
+    await ComputerStoreContextSeed.SeedAsync(ComputerStoreContext);
 }
 
 // Configure the HTTP request pipeline.
@@ -73,7 +73,6 @@ app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
 
 app.MapControllers();
 

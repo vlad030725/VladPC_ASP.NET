@@ -3,6 +3,7 @@ import { Button, Table } from "antd";
 import type { TableProps } from "antd";
 import ProductObj from "../Entities/ProductObj";
 import ProductCreate from "../Products/ProductCreate";
+import axios from "axios";
 
 interface PropsType { }
 
@@ -28,39 +29,30 @@ const Product : React.FC<PropsType> = () => {
 
     useEffect(() => {
         const getProducts = async () => {
-
-            const requestOptions: RequestInit = {
-                method: 'GET'
-            };
-
-            await fetch(`http://localhost:5075/api/Product`, requestOptions)
-                .then(response => response.json())
-                .then(
-                    (data) => {
-                        console.log(data);
-                        setProducts(data);
-                    },
-                    (error) => console.log(error)
-                );
-        };
+            try {
+              const response = await axios.get('http://localhost:5075/api/Product',
+              { withCredentials: true });
+              console.log(response.data);
+              setProducts(response.data);
+            } catch (error) {
+              console.error('Ошибка при получении продуктов:', error);
+            }
+          };
         getProducts();
     }, [createModalIsShow]);
 
     const deleteProduct = async (id: number | undefined) => {
-        const requestOptions: RequestInit = {
-            method: 'DELETE'
+        try {
+          const response = await axios.delete(`http://localhost:5075/api/Product/${id}`,
+          { withCredentials: true });
+          if (response.status === 200) {
+            removeProduct(id);
+            console.log(id);
+          }
+        } catch (error) {
+          console.error('Ошибка при удалении продукта:', error);
         }
-
-        return await fetch(`http://localhost:5075/api/Product/${id}`, requestOptions)
-            .then((response) => {
-                if (response.ok) {
-                    removeProduct(id);
-                    console.log(id);
-                }
-            },
-                (error) => console.log(error)
-            )
-    };
+      };
 
     const editProduct = (obj : ProductObj) => {
         setEditingProduct(obj);

@@ -20,10 +20,10 @@ namespace VladPC_ASP.NET.Controllers
         }
 
         // GET: api/<CustomsController>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<CustomDto>>> Get()
+        [HttpGet("history/{idUser}")]
+        public async Task<ActionResult<IEnumerable<CustomDto>>> GetHistory(int idUser)
         {
-            return await Task.Run(() => _customService.GetAllCustoms());
+            return await Task.Run(() => _customService.GetCustomHistory(idUser).OrderByDescending(i => i.Id).ToList());
         }
 
         // GET api/<CustomsController>/5

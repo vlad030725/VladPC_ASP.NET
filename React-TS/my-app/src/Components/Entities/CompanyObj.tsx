@@ -1,7 +1,6 @@
-interface CompanyObj
-{
-    id?: number
-    name: string
+interface CompanyObj {
+  id?: number;
+  name: string;
 }
 
 export default CompanyObj;

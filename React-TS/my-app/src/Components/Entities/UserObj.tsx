@@ -1,7 +1,7 @@
 interface UserObj {
     id?: number
     userName: string
-    roles: string
+    role: string
     isAuthenticated: boolean
 }
   

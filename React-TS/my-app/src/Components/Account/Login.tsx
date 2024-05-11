@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 import LoginObj from "../Entities/LoginObj";
 import UserObj from "../Entities/UserObj";
 import { notification } from "antd";
-import axios from 'axios';
-
+import axios from "axios";
 
 interface PropsType {
   setUser: (value: UserObj) => void;
@@ -30,37 +29,41 @@ const Login: React.FC<PropsType> = ({ setUser }) => {
     };
 
     const loginFunc = async () => {
-        try {
-            const response = await axios.post('http://localhost:5075/api/account/login', model, {
+      try {
+        const response = await axios.post(
+          "http://localhost:5075/api/account/login",
+          model,
+          {
             withCredentials: true, // включить куки в запросы
-          })
-          
-          console.log(response);
-
-          if (response.status === 200) {
-            setMessage(["Вход завершился удачно"]);
-            notification.success({
-              message: "Вход завершился удачно",
-              placement: "topRight",
-              duration: 2,
-            });
-  
-            setUser(response.data.user);
-            // Переход на главную страницу
-            navigate("/");
-          } else {
-            setMessage(["Вход завершился неудачно"]);
-            notification.error({
-              message: "Вход завершился неудачно",
-              placement: "topRight",
-              duration: 2,
-            });
           }
-        } catch (error) {
-          console.log(error);
-          setMessage(["Неправильный логин или пароль"]);
+        );
+
+        console.log(response);
+
+        if (response.status === 200) {
+          setMessage(["Вход завершился удачно"]);
+          notification.success({
+            message: "Вход завершился удачно",
+            placement: "topRight",
+            duration: 2,
+          });
+          console.log(response.data.user);
+          setUser(response.data.user);
+          // Переход на главную страницу
+          navigate("/");
+        } else {
+          setMessage(["Вход завершился неудачно"]);
+          notification.error({
+            message: "Вход завершился неудачно",
+            placement: "topRight",
+            duration: 2,
+          });
         }
-      };
+      } catch (error) {
+        console.log(error);
+        setMessage(["Неправильный логин или пароль"]);
+      }
+    };
 
     loginFunc();
   };
@@ -82,7 +85,7 @@ const Login: React.FC<PropsType> = ({ setUser }) => {
             {
               required: true,
               message: "Введите логин",
-            }
+            },
           ]}
         >
           <Input name="login" onChange={(e) => setLogin(e.target.value)} />

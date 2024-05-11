@@ -162,7 +162,7 @@ namespace DAL.RepositoryPgs
 
         public int Save()
         {
-            return db.SaveChanges();
+            return db.SaveChanges(true);
         }
     }
 }

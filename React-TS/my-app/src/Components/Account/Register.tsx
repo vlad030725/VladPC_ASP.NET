@@ -3,7 +3,7 @@ import { Input, Button, Form } from "antd";
 import { Link } from "react-router-dom";
 import RegisterObj from "../Entities/RegisterObj";
 import { notification } from "antd";
-import axios from 'axios';
+import axios from "axios";
 
 interface PropsType {}
 
@@ -20,24 +20,30 @@ const Register: React.FC<PropsType> = () => {
     const model: RegisterObj = {
       login: login,
       password,
-      passwordConfirm
+      passwordConfirm,
     };
 
     const register = async () => {
       try {
-        const response = await axios.post("http://localhost:5075/api/account/register", model, {
-          withCredentials: true,
-        });
-    
+        const response = await axios.post(
+          "http://localhost:5075/api/account/register",
+          model,
+          {
+            withCredentials: true,
+          }
+        );
+
         notification.success({
           message: "Регистрация завершилась удачно",
           placement: "topRight",
           duration: 2,
         });
-    
+
         if (response.data.error !== undefined) {
           console.log(response.data.error);
-          setError(["Регистрация завершилась неудачно "].concat(response.data.error));
+          setError(
+            ["Регистрация завершилась неудачно "].concat(response.data.error)
+          );
         } else {
           setError([response.data.message]);
         }
@@ -71,7 +77,7 @@ const Register: React.FC<PropsType> = () => {
             {
               required: true,
               message: "Введите имя пользователя",
-            }
+            },
           ]}
         >
           <Input name="login" onChange={(e) => setLogin(e.target.value)} />

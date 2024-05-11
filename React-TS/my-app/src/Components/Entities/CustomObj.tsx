@@ -1,5 +1,3 @@
-import CustomRowObj from "../Entities/CustomRowObj";
-
 interface CustomObj
 {
     id?: number

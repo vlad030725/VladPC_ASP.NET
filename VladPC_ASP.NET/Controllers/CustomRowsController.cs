@@ -33,12 +33,6 @@ namespace VladPC_ASP.NET.Controllers
             return await Task.Run(() => _customService.GetCustomInCart(idUser).CustomRows);
         }
 
-        // GET api/<CustomRowsController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
 
         // POST api/<CustomRowsController>
         [HttpPost]

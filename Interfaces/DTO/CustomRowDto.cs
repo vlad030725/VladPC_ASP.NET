@@ -14,10 +14,10 @@ namespace Interfaces.DTO
             Id = r.Id;
             IdCustom = r.IdCustom;
             IdProduct = r.IdProduct;
-            ProductName = products.First(i => i.Id == IdProduct).Name;
+            ProductName = products.FirstOrDefault(i => i.Id == IdProduct) == null? null: products.FirstOrDefault(i => i.Id == IdProduct).Name;
             Price = r.Price;
             Count = r.Count;
-            Product = products.Where(i => i.Id == IdProduct).Single();
+            Product = products.Where(i => i.Id == IdProduct).SingleOrDefault();
         }
 
         public CustomRowDto() { }

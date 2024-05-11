@@ -80,15 +80,16 @@ namespace VladPC_ASP.NET.Controllers
                 
                 if (result.Succeeded)
                 {
-                    User? _user = await _userManager.GetUserAsync(HttpContext.User);
-                    IEnumerable<string> roles = await _userManager.GetRolesAsync(_user);
+                    User? userIzBazi = await _userManager.GetUserAsync(HttpContext.User);
+                    IEnumerable<string> roles = await _userManager.GetRolesAsync(userIzBazi);
                     string? userRole = roles.FirstOrDefault();
                     //return Ok(new { message = "Выполнен вход", userName = model.Email, userRole });
                     UserDto user = new UserDto()
                     {
-                        Id = _user.Id,
+                        Id = userIzBazi.Id,
                         UserName = model.Login,
-                        Password = model.Password
+                        Password = model.Password,
+                        Role = userRole
                     };
                     return Ok(new { message = "Выполнен вход", user });
                 }
@@ -132,11 +133,19 @@ namespace VladPC_ASP.NET.Controllers
         [Route("api/account/isauthenticated")]
         public async Task<IActionResult> IsAuthenticated()
         {
-            User user = await GetCurrentUserAsync();
-            if (user == null)
+            User userIzBazi = await GetCurrentUserAsync();
+            if (userIzBazi == null)
             {
                 return Unauthorized(new { message = "Вы Гость. Пожалуйста, выполните вход" });
             }
+            IEnumerable<string> roles = await _userManager.GetRolesAsync(userIzBazi);
+            string? userRole = roles.FirstOrDefault();
+            UserDto user = new UserDto()
+            {
+                Id = userIzBazi.Id,
+                UserName = userIzBazi.UserName,
+                Role = userRole
+            };
             return Ok(new { message = "Сессия активна", user });
         }
 

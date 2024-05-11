@@ -21,6 +21,7 @@ namespace VladPC_ASP.NET.Controllers
         }
         // GET: api/<CompaniesController>
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<CompanyDto>>> Get()
         {
             return await Task.Run(() => _companyService.GetCompanies());
@@ -28,6 +29,7 @@ namespace VladPC_ASP.NET.Controllers
 
         // GET api/<CompaniesController>/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<CompanyDto>> Get(int id)
         {
             return await Task.Run(() => _companyService.GetCompany(id));
@@ -35,6 +37,7 @@ namespace VladPC_ASP.NET.Controllers
 
         // POST api/<CompaniesController>
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<CompanyDto>> Post(CompanyDto value)
         {
             if (!ModelState.IsValid)
@@ -49,6 +52,7 @@ namespace VladPC_ASP.NET.Controllers
 
         // PUT api/<CompaniesController>/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<CompanyDto>> Put(CompanyDto value)
         {
             await Task.Run(() => _companyService.UpdateCompany(value));
@@ -56,8 +60,8 @@ namespace VladPC_ASP.NET.Controllers
         }
 
         // DELETE api/<CompaniesController>/5
-        [Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async void Delete(int id)
         {
             await Task.Run(() => _companyService.DeleteCompany(id));

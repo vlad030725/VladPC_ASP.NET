@@ -20,9 +20,9 @@ namespace Interfaces.DTO
             Price = p.Price;
             Count = p.Count;
             IdCompany = p.IdCompany;
-            Company = companies.Single(i => i.Id == IdCompany).Name;
+            Company = companies.SingleOrDefault(i => i.Id == IdCompany) == null? null: companies.SingleOrDefault(i => i.Id == IdCompany).Name;
             IdTypeProduct = p.IdTypeProduct;
-            TypeProduct = typeProducts.Single(i => i.Id == IdTypeProduct).Name;
+            TypeProduct = typeProducts.SingleOrDefault(i => i.Id == IdTypeProduct) == null? null: typeProducts.SingleOrDefault(i => i.Id == IdTypeProduct).Name;
             CountCores = p.CountCores;
             CountStreams = p.CountStreams;
             Frequency = p.Frequency;
@@ -70,11 +70,11 @@ namespace Interfaces.DTO
         public int? Count { get; set; }
 
         public int? IdCompany { get; set; }
-        public string Company { get; set; }
+        public string? Company { get; set; }
 
         public int? IdTypeProduct { get; set; }
         //public string TypeProduct { get; set; }
-        public string TypeProduct { get; set; }
+        public string? TypeProduct { get; set; }
 
         public int? CountCores { get; set; }
 
@@ -90,9 +90,9 @@ namespace Interfaces.DTO
 
         public int? IdFormFactor { get; set; }
 
-        public List<CompanyDto> CompanyList { get; set; }
-        public List<TypeProduct> TypeProductsList { get; set; }
+        public List<CompanyDto>? CompanyList { get; set; }
+        public List<TypeProduct>? TypeProductsList { get; set; }
 
-        public string CatalogString { get; set; }
+        public string? CatalogString { get; set; }
     }
 }

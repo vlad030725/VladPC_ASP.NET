@@ -3,6 +3,7 @@ import { Button, Table } from "antd";
 import type { TableProps } from "antd";
 import TypeProductObj from "../Entities/TypeProductObj";
 import TypeProductCreate from "../TypesProduct/TypeProductCreate";
+import axios from "axios";
 
 interface PropsType { }
 
@@ -28,39 +29,30 @@ const TypeProduct : React.FC<PropsType> = () => {
 
     useEffect(() => {
         const getTypesProduct = async () => {
-
-            const requestOptions: RequestInit = {
-                method: 'GET'
-            };
-
-            await fetch(`http://localhost:5075/api/TypeProduct`, requestOptions)
-                .then(response => response.json())
-                .then(
-                    (data) => {
-                        console.log(data);
-                        setTypesProduct(data);
-                    },
-                    (error) => console.log(error)
-                );
-        };
+            try {
+              const response = await axios.get('http://localhost:5075/api/TypeProduct',
+              { withCredentials: true });
+              console.log(response.data);
+              setTypesProduct(response.data);
+            } catch (error) {
+              console.error('Ошибка при получении типов продуктов:', error);
+            }
+          };
         getTypesProduct();
     }, [createModalIsShow]);
 
     const deleteTypesProduct = async (id: number | undefined) => {
-        const requestOptions: RequestInit = {
-            method: 'DELETE'
+        try {
+          const response = await axios.delete(`http://localhost:5075/api/TypeProduct/${id}`,
+          { withCredentials: true });
+          if (response.status === 200) {
+            removeTypeProduct(id);
+            console.log(id);
+          }
+        } catch (error) {
+          console.error('Ошибка при удалении типа продукта:', error);
         }
-
-        return await fetch(`http://localhost:5075/api/TypeProduct/${id}`, requestOptions)
-            .then((response) => {
-                if (response.ok) {
-                    removeTypeProduct(id);
-                    console.log(id);
-                }
-            },
-                (error) => console.log(error)
-            )
-    };
+      };
 
     const editTypesProduct = (obj : TypeProductObj) => {
         setEditingTypeProduct(obj);

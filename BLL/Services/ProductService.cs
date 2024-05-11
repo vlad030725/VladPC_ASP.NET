@@ -95,7 +95,7 @@ namespace BLL.Services
                 Id = product.Id,
                 Name = product.Name,
                 Price = product.Price,
-                Count = 0,
+                Count = product.Count,
                 IdCompany = product.IdCompany,
                 IdTypeProduct = product.IdTypeProduct,
                 CountCores = product.CountCores,

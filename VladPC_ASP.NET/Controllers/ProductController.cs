@@ -50,6 +50,7 @@ namespace VladPC_ASP.NET.Controllers
                 IdTypeMemory = value.IdTypeMemory,
                 CountCores = value.CountCores,
                 CountStreams = value.CountStreams,
+                CountMemory = value.CountMemory,
                 Frequency = value.Frequency,
                 IdSocket = value.IdSocket,
                 IdFormFactor = value.IdFormFactor
