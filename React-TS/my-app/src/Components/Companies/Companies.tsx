@@ -45,14 +45,16 @@ const Company: React.FC<PropsType> = () => {
 
   const deleteCompany = async (id: number | undefined) => {
     try {
-      const response = await axios.delete(`http://localhost:5075/api/Companies/${id}`,
-      { withCredentials: true });
+      const response = await axios.delete(
+        `http://localhost:5075/api/Companies/${id}`,
+        { withCredentials: true }
+      );
       if (response.status === 200) {
         removeCompany(id);
         console.log(id);
       }
     } catch (error) {
-      console.error('Ошибка при удалении компании:', error);
+      console.error("Ошибка при удалении компании:", error);
     }
   };
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Input, Modal, Button, Form } from "antd";
 import CompanyObj from "../Entities/CompanyObj";
-import axios from 'axios';
+import axios from "axios";
 
 interface PropsType {
   editingCompany: CompanyObj | undefined;
@@ -43,17 +43,20 @@ const CompanyCreate: React.FC<PropsType> = ({
       const company: CompanyObj = {
         name,
       };
-    
+
       try {
-        const response = await axios.post(`http://localhost:5075/api/Companies`, company,
-        { withCredentials: true });
+        const response = await axios.post(
+          `http://localhost:5075/api/Companies`,
+          company,
+          { withCredentials: true }
+        );
         console.log(response.data);
         if (response.status === 200) {
           addCompany(response.data);
           form.resetFields();
         }
       } catch (error) {
-        console.error('Ошибка при создании компании:', error);
+        console.error("Ошибка при создании компании:", error);
       }
     };
 
@@ -62,10 +65,13 @@ const CompanyCreate: React.FC<PropsType> = ({
         id,
         name,
       };
-    
+
       try {
-        const response = await axios.put(`http://localhost:5075/api/Companies/${id}`, company,
-        { withCredentials: true });
+        const response = await axios.put(
+          `http://localhost:5075/api/Companies/${id}`,
+          company,
+          { withCredentials: true }
+        );
         if (response.status === 200) {
           console.log(response.data);
           updateCompany(response.data);
@@ -73,7 +79,7 @@ const CompanyCreate: React.FC<PropsType> = ({
           form.resetFields();
         }
       } catch (error) {
-        console.error('Ошибка при редактировании компании:', error);
+        console.error("Ошибка при редактировании компании:", error);
       }
     };
     console.log(isEdit);

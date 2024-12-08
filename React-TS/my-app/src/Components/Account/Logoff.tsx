@@ -14,9 +14,13 @@ const LogOff: React.FC<PropsType> = ({ setUser }) => {
   useEffect(() => {
     const logOff = async () => {
       try {
-        const response = await axios.post("http://localhost:5075/api/account/logoff", null, {
-          withCredentials: true, // включить куки в запросы
-        });
+        const response = await axios.post(
+          "http://localhost:5075/api/account/logoff",
+          null,
+          {
+            withCredentials: true, // включить куки в запросы
+          }
+        );
 
         if (response.status === 200) {
           setUser(null);

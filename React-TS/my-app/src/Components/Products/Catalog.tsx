@@ -5,7 +5,7 @@ import ProductObj from "../Entities/ProductObj";
 import UserObj from "../Entities/UserObj";
 import CustomRowObj from "../Entities/CustomRowObj";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 
 interface PropsType {
   user: UserObj | null;
@@ -107,7 +107,7 @@ const Product: React.FC<PropsType> = ({ user }) => {
     {
       key: "Delete",
       width: "15%",
-      render: (row: ProductObj) =>  {
+      render: (row: ProductObj) => {
         if (row.count > 0) {
           return (
             <Button

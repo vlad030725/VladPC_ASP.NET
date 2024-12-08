@@ -62,7 +62,7 @@ const adminItems = [
       </NavLink>
     ),
     key: "6",
-  }
+  },
 ];
 
 const defaultItems = [

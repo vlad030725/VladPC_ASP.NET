@@ -50,22 +50,6 @@ const ProductCreate: React.FC<PropsType> = ({
   const [catalogString, setCatalogString] = useState<string>(""); //Текущее значение строки каталога
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  //   const [isInputDisabledFrequency, setIsInputDisabledFrequency] =
-  //     useState(false);
-  //   const [isInputDisabledCountCores, setIsInputDisabledCountCores] =
-  //     useState(false);
-  //   const [isInputDisabledCountStreams, setIsInputDisabledCountStreams] =
-  //     useState(false);
-  //   const [isInputDisabledSocket, setIsInputDisabledSocket] = useState(false);
-  //   const [isInputDisabledTypeMemory, setIsInputDisabledTypeMemory] =
-  //     useState(false);
-  //   const [isInputDisabledCountMemory, setIsInputDisabledCountMemory] =
-  //     useState(false);
-  //   const [isInputDisabledFormFactor, setIsInputDisabledFormFactor] =
-  //     useState(false);
-
-  //const [isExit, setIsExit] = useState<boolean>(false);
-
   useEffect(() => {
     const getTypesProduct = async () => {
       try {
@@ -141,7 +125,7 @@ const ProductCreate: React.FC<PropsType> = ({
     getFormFactors();
 
     if (editingProduct !== undefined) {
-        console.log(editingProduct);
+      console.log(editingProduct);
       form.setFieldsValue({
         typeProduct: editingProduct.idTypeProduct,
         name: editingProduct.name,
@@ -185,7 +169,7 @@ const ProductCreate: React.FC<PropsType> = ({
 
   const handleSubmit = () => {
     const createProducts = async () => {
-        console.log(typeProductCurrent?.id);
+      console.log(typeProductCurrent?.id);
       const product: ProductObj = {
         name,
         price,
@@ -199,7 +183,8 @@ const ProductCreate: React.FC<PropsType> = ({
         frequency,
         idSocket: typeProductCurrent?.id == 1 ? socketCurrent?.id : undefined,
         countMemory: typeProductCurrent?.id == 1 ? undefined : countMemory,
-        idTypeMemory: typeProductCurrent?.id == 1 ? undefined : typeMemoryCurrent?.id,
+        idTypeMemory:
+          typeProductCurrent?.id == 1 ? undefined : typeMemoryCurrent?.id,
         idFormFactor: undefined,
         catalogString,
       };
@@ -237,7 +222,8 @@ const ProductCreate: React.FC<PropsType> = ({
         frequency,
         idSocket: typeProductCurrent?.id == 1 ? socketCurrent?.id : undefined,
         countMemory: typeProductCurrent?.id == 1 ? undefined : countMemory,
-        idTypeMemory: typeProductCurrent?.id == 1 ? undefined : typeMemoryCurrent?.id,
+        idTypeMemory:
+          typeProductCurrent?.id == 1 ? undefined : typeMemoryCurrent?.id,
         idFormFactor: undefined,
         catalogString,
       };
@@ -270,7 +256,10 @@ const ProductCreate: React.FC<PropsType> = ({
     <Modal
       open={createModalIsShow}
       title="Форма продукта"
-      onCancel={() => {form.resetFields(); showCreateModel(false);}}
+      onCancel={() => {
+        form.resetFields();
+        showCreateModel(false);
+      }}
       footer={[
         <Button
           key="submitButton"
